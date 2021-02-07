@@ -1,0 +1,21 @@
+arr=runif(1000)
+library(trapezoid)
+a=1; b=5; c=10; d=15;
+curve(dtrapezoid(x, min = a, mode1 = b, mode2 = c, max = d, 
+               n1 = 2, n3 = 2, alpha = 1), from = a, to = d)
+inverse_CDF<-function(x){
+if (x == 0){
+ result <- a;
+}else if(x > 0 && x < (b-a)/(c+d-a-b)){
+ result <- (sqrt((d+c-b-a)/(b-a)*x))*(b-a)+a
+}else if (x >= (b-a)/(c+d-a-b) && x<(2*c-a-b)/(c+d-a-b)){
+ result<- (((d+c-b-a)*x)-(b-a))/2+b
+}else if (x >= (2*c-a-b)/(c+d-a-b) && x < 1){
+ result <- d-(d-c)*sqrt((1-x)*(d+c-a-b)/(d-c))
+}else{
+ result <- d;
+}
+ return (result);
+}
+arr2=sapply(arr,inverse_CDF)
+hist(arr2)
